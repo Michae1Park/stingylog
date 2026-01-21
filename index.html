@@ -16,24 +16,74 @@
   <main class="app">
     <h1>🐷 StingyLog</h1>
 
-    <div class="card">
-      <input
-        id="amount"
-        type="number"
-        inputmode="decimal"
-        placeholder="Amount"
-      />
-      <input
-        id="note"
-        type="text"
-        placeholder="What was it for?"
-      />
-      <button id="addBtn">Add Expense</button>
+    <div class="tabs">
+        <button id="tabCalendar" class="active">Calendar</button>
+        <button id="tabStats">Stats</button>
     </div>
 
-    <h2 id="total">Total: 0</h2>
+    <section id="calendarView">
+        <div class="calendar">
+            <div class="calendar-header">
+                <button id="prevMonth">‹</button>
+                <span id="monthLabel"></span>
+                <button id="nextMonth">›</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
 
-    <ul id="list"></ul>
+        <div class="card">
+        <input
+            id="amount"
+            type="number"
+            inputmode="decimal"
+            placeholder="Amount"
+        />
+        <input
+            id="note"
+            type="text"
+            placeholder="What was it for?"
+        />
+        <button id="addBtn">Add Expense</button>
+        </div>
+
+        <h2 id="total">Total: 0</h2>
+        <ul id="list"></ul>
+    </section>
+
+    <section id="statsView" hidden>
+        <div class="card">
+            <label>
+            Time range
+            <select id="range">
+                <option value="7">Last 7 days</option>
+                <option value="14">Last 14 days</option>
+                <option value="30">Last 30 days</option>
+                <option value="custom">Custom</option>
+            </select>
+            </label>
+
+            <label id="customRange" hidden>
+            From
+            <input type="date" id="fromDate" />
+            To
+            <input type="date" id="toDate" />
+            </label>
+
+            <label>
+            Budget
+            <input type="number" id="budget" placeholder="Optional" />
+            </label>
+        </div>
+
+        <div class="card">
+            <h2 id="statsTotal">Total: 0</h2>
+            <div class="progress">
+            <div id="progressBar"></div>
+            </div>
+            <p id="statsPercent"></p>
+        </div>
+    </section>
+
   </main>
 
   <script src="app.js"></script>
