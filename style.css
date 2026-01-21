@@ -150,3 +150,38 @@ label select {
   background: #000;
   transition: width 0.3s ease;
 }
+
+
+/* ===== Swipe to delete ===== */
+
+.swipe-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-item::after {
+  content: "Delete";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.swipe-item {
+  background: #e53935;
+}
+
+.swipe-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.2s ease;
+  will-change: transform;
+}

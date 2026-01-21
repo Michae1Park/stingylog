@@ -80,11 +80,23 @@ function render() {
       render();
     };
 
-    li.appendChild(text);
-    li.appendChild(amount);
-    li.appendChild(del);
+    // li.appendChild(text);
+    // li.appendChild(amount);
+    // li.appendChild(del);
+    // list.appendChild(li);
 
+    li.classList.add("swipe-item");
+
+    const content = document.createElement("div");
+    content.className = "swipe-content";
+
+    content.appendChild(text);
+    content.appendChild(amount);
+
+    li.appendChild(content);
     list.appendChild(li);
+
+    enableSwipe(li, e.id);
   });
 
   totalEl.textContent = `Total (${selectedDate}): ${total}`;
@@ -243,3 +255,47 @@ toDate.onchange = renderStats;
 
 renderCalendar();
 render();
+
+function enableSwipe(li, expenseId) {
+  const content = li.querySelector(".swipe-content");
+
+  let startX = 0;
+  let currentX = 0;
+  let dragging = false;
+
+  content.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    dragging = true;
+    content.style.transition = "none";
+  });
+
+  content.addEventListener("touchmove", e => {
+    if (!dragging) return;
+
+    currentX = e.touches[0].clientX - startX;
+    if (currentX < 0) {
+      content.style.transform = `translateX(${currentX}px)`;
+    }
+  });
+
+  content.addEventListener("touchend", () => {
+    dragging = false;
+    content.style.transition = "transform 0.2s ease";
+
+    if (currentX < -80) {
+      // delete
+      content.style.transform = "translateX(-100%)";
+      setTimeout(() => {
+        expenses = expenses.filter(e => e.id !== expenseId);
+        save();
+        render();
+        renderCalendar();
+      }, 200);
+    } else {
+      // snap back
+      content.style.transform = "translateX(0)";
+    }
+
+    currentX = 0;
+  });
+}
