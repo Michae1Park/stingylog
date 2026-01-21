@@ -1,45 +1,108 @@
+/* Reset + sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* Page */
 body {
-  font-family: system-ui, -apple-system, sans-serif;
   margin: 0;
-  padding: 16px;
   background: #f5f5f5;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #111;
 }
 
-h1, h2 {
-  text-align: center;
-}
-
-.card {
-  background: white;
+/* App container */
+.app {
+  max-width: 480px;
+  margin: 0 auto;
   padding: 16px;
-  border-radius: 12px;
-  display: flex;
-  gap: 8px;
 }
 
-input, button {
-  font-size: 16px;
-  padding: 10px;
-  border-radius: 8px;
+/* Headings */
+h1 {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+h2 {
+  text-align: center;
+  margin: 20px 0 12px;
+}
+
+/* Input card */
+.card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 14px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Inputs + button */
+input,
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px; /* prevents iOS zoom */
+  border-radius: 10px;
+}
+
+input {
   border: 1px solid #ccc;
 }
 
-button {
-  background: black;
-  color: white;
-  border: none;
+input:focus {
+  outline: none;
+  border-color: #000;
 }
 
+/* Button */
+button {
+  border: none;
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Expense list */
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 li {
-  background: white;
+  background: #fff;
   margin-top: 8px;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Expense text */
+li span {
+  flex: 1;
+  word-break: break-word;
+}
+
+/* Amount */
+li strong {
+  white-space: nowrap;
+}
+
+/* Tablet / desktop polish */
+@media (min-width: 768px) {
+  .app {
+    max-width: 600px;
+  }
 }
