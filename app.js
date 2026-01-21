@@ -59,6 +59,10 @@ function render() {
     total += e.amount;
 
     const li = document.createElement("li");
+    li.className = "expense-item";
+
+    const content = document.createElement("div");
+    content.className = "expense-content";
 
     const text = document.createElement("span");
     text.textContent = e.note || "(no note)";
@@ -66,38 +70,26 @@ function render() {
     const amount = document.createElement("strong");
     amount.textContent = e.amount;
 
-    const del = document.createElement("button");
-    del.textContent = "✕";
-    del.style.background = "transparent";
-    del.style.color = "#999";
-    del.style.border = "none";
-    del.style.fontSize = "18px";
-    del.style.cursor = "pointer";
-
-    del.onclick = () => {
-      expenses = expenses.filter(x => x.id !== e.id);
-      save();
-      render();
-    };
-
-    // li.appendChild(text);
-    // li.appendChild(amount);
-    // li.appendChild(del);
-    // list.appendChild(li);
-
-    li.classList.add("swipe-item");
-
-    const content = document.createElement("div");
-    content.className = "swipe-content";
-
     content.appendChild(text);
     content.appendChild(amount);
 
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.textContent = "✕";
+    del.onclick = () => {
+        expenses = expenses.filter(x => x.id !== e.id);
+        save();
+        render();
+        renderCalendar();
+    };
+
     li.appendChild(content);
+    li.appendChild(del);
     list.appendChild(li);
 
-    enableSwipe(li, e.id);
+    enableSwipe(li, content, e.id);
   });
+
 
   totalEl.textContent = `Total (${selectedDate}): ${total}`;
 }
@@ -256,34 +248,28 @@ toDate.onchange = renderStats;
 renderCalendar();
 render();
 
-function enableSwipe(li, expenseId) {
-  const content = li.querySelector(".swipe-content");
+function enableSwipe(li, content, expenseId) {
+  if (!("ontouchstart" in window)) return;
 
   let startX = 0;
   let currentX = 0;
-  let dragging = false;
 
   content.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
-    dragging = true;
     content.style.transition = "none";
-  });
+  }, { passive: true });
 
   content.addEventListener("touchmove", e => {
-    if (!dragging) return;
-
     currentX = e.touches[0].clientX - startX;
     if (currentX < 0) {
       content.style.transform = `translateX(${currentX}px)`;
     }
-  });
+  }, { passive: true });
 
   content.addEventListener("touchend", () => {
-    dragging = false;
     content.style.transition = "transform 0.2s ease";
 
     if (currentX < -80) {
-      // delete
       content.style.transform = "translateX(-100%)";
       setTimeout(() => {
         expenses = expenses.filter(e => e.id !== expenseId);
@@ -292,10 +278,10 @@ function enableSwipe(li, expenseId) {
         renderCalendar();
       }, 200);
     } else {
-      // snap back
       content.style.transform = "translateX(0)";
     }
 
     currentX = 0;
   });
 }
+

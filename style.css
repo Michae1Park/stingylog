@@ -185,3 +185,82 @@ label select {
   transition: transform 0.2s ease;
   will-change: transform;
 }
+
+/* ===== Expense item ===== */
+
+.expense-item {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 12px;
+  margin-top: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Content layout */
+.expense-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 44px 12px 12px; /* space for delete button */
+  background: #fff;
+
+  transition: transform 0.2s ease;
+  will-change: transform;
+}
+
+/* Note text */
+.expense-content span {
+  word-break: break-word;
+}
+
+/* Amount */
+.expense-content strong {
+  white-space: nowrap;
+}
+
+/* Delete button (desktop/web) */
+.delete-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  color: #000;
+}
+
+/* Swipe delete background */
+.expense-item {
+  background: #e53935;
+}
+
+.expense-item::after {
+  content: "Delete";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* ===== Mobile / touch devices ===== */
+@media (hover: none) {
+  .delete-btn {
+    display: none;
+  }
+
+  .expense-content {
+    padding-right: 12px; /* reclaim space */
+  }
+}
