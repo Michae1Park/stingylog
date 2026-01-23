@@ -1,97 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StingyLog</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>StingyLog</title>
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<!-- PWA -->
+  	<link rel="manifest" href="manifest.json" />
 
-  <link rel="stylesheet" href="style.css" />
+	<!-- Theme color used for browser UI and Android status bar -->
+	<meta name="theme-color" content="#111111" />
+
+	<!-- iOS PWA support -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<!-- App name shown under the icon on iOS home screen -->
+	<meta name="apple-mobile-web-app-title" content="StingyLog" />
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="piggy.png">
+
+	<!-- Content Security Policy -->
+	<meta http-equiv="Content-Security-Policy"
+		content="
+			default-src 'self';
+			script-src 'self';
+			style-src 'self' 'unsafe-inline';
+			img-src 'self' data:;
+			connect-src 'self';
+		" />
+
+	<link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <main class="app">
-    <h1>🐷 StingyLog</h1>
+	<header>
+		<h1>🐷 StingyLog</h1>
+	</header>
 
-    <div class="tabs">
-        <button id="tabCalendar" class="active">Calendar</button>
-        <button id="tabStats">Stats</button>
-    </div>
+	<main class="app">
 
-    <section id="calendarView">
-        <div class="calendar">
-            <div class="calendar-header">
-                <button id="prevMonth">‹</button>
-                <span id="monthLabel"></span>
-                <button id="nextMonth">›</button>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
+		<div class="tabs">
+			<button id="tabCalendar" class="active">Calendar</button>
+			<button id="tabStats">Stats</button>
+		</div>
 
-        <div class="card">
-        <input
-            id="amount"
-            type="number"
-            inputmode="decimal"
-            placeholder="Amount"
-        />
-        <input
-            id="note"
-            type="text"
-            placeholder="What was it for?"
-        />
-        <button id="addBtn">Add Expense</button>
-        </div>
+		<section id="calendarView">
+			<div class="calendar">
+				<div class="calendar-header">
+					<button id="prevMonth">‹</button>
+					<span id="monthLabel"></span>
+					<button id="nextMonth">›</button>
+				</div>
+				<div class="calendar-grid" id="calendarGrid"></div>
+			</div>
 
-        <h2 id="total">Total: 0</h2>
-        <ul id="list"></ul>
-    </section>
+			<div class="card">
+			<input
+				id="amount"
+				type="number"
+				inputmode="decimal"
+				placeholder="Amount"
+			/>
+			<input
+				id="note"
+				type="text"
+				placeholder="What was it for?"
+			/>
+			<button id="addBtn">Add Expense</button>
+			</div>
 
-    <section id="statsView" hidden>
-        <div class="card">
-            <label>
-            Time range
-            <select id="range">
-                <option value="7">Last 7 days</option>
-                <option value="14">Last 14 days</option>
-                <option value="30">Last 30 days</option>
-                <option value="custom">Custom</option>
-            </select>
-            </label>
+			<h2 id="total">Total: 0</h2>
+			<ul id="list"></ul>
+		</section>
 
-            <label id="customRange" hidden>
-            From
-            <input type="date" id="fromDate" />
-            To
-            <input type="date" id="toDate" />
-            </label>
+		<section id="statsView" hidden>
+			<div class="card">
+				<label>
+				Time range
+				<select id="range">
+					<option value="7">Last 7 days</option>
+					<option value="14">Last 14 days</option>
+					<option value="30">Last 30 days</option>
+					<option value="custom">Custom</option>
+				</select>
+				</label>
 
-            <label>
-            Budget
-            <input type="number" id="budget" placeholder="Optional" />
-            </label>
-        </div>
+				<label id="customRange" hidden>
+				From
+				<input type="date" id="fromDate" />
+				To
+				<input type="date" id="toDate" />
+				</label>
 
-        <div class="card">
-            <h2 id="statsTotal">Total: 0</h2>
-            <div class="progress">
-            <div id="progressBar"></div>
-            </div>
-            <p id="statsPercent"></p>
-        </div>
-    </section>
+				<label>
+				Budget
+				<input type="number" id="budget" placeholder="Optional" />
+				</label>
+			</div>
 
-  </main>
+			<div class="card">
+				<h2 id="statsTotal">Total: 0</h2>
+				<div class="progress">
+				<div id="progressBar"></div>
+				</div>
+				<p id="statsPercent"></p>
+			</div>
+		</section>
+	</main>
 
-  <script src="app.js"></script>
+	<script src="app.js"></script>
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js");
-    }
-  </script>
+	<script>
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', async () => {
+		try {
+			await navigator.serviceWorker.register('./sw.js');
+		} catch (err) {
+			console.error('SW registration failed', err);
+		}
+		});
+	}
+	</script>
 </body>
 </html>

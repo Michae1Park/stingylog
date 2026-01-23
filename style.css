@@ -1,4 +1,7 @@
 /* ===== Calendar ===== */
+body {
+  padding-top: env(safe-area-inset-top);
+}
 
 .calendar {
   background: #fff;
