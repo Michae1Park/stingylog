@@ -1,75 +1,157 @@
-/* ===== Calendar ===== */
+/* =========================
+   BASE / GLOBAL STYLES
+========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-bg: #fff;
+  --primary-color: #000;
+  --secondary-bg: #f7f7f7;
+  --accent-color: #e53935;
+  --text-color: #333;
+}
+
 body {
+  font-family: sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  background: #f5f5f5;
+  color: var(--text-color);
   padding-top: env(safe-area-inset-top);
 }
 
+/* Center container with max width for desktop */
+.container {
+  width: 95%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Sticky header / total */
+h2 {
+  position: sticky;
+  top: 0;
+  background: #f5f5f5;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  z-index: 1;
+}
+
+/* =========================
+   TABS
+========================= */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: none;
+  background: #ddd;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: var(--primary-color);
+  color: var(--primary-bg);
+}
+
+/* =========================
+   CALENDAR STYLES
+========================= */
 .calendar {
-  background: #fff;
+  background: var(--primary-bg);
   border-radius: 14px;
-  padding: 12px;
-  margin-bottom: 16px;
+  padding: 1rem;
+  margin-bottom: 1rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* Header */
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
 .calendar-header span {
   font-weight: 600;
+  font-size: 1rem;
 }
 
 .calendar-header button {
-  background: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f0f0f0;
   border: none;
-  font-size: 22px;
-  padding: 6px 10px;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
 }
 
-/* Grid */
+/* Touch feedback */
+.calendar-header button:active {
+  transform: scale(0.92);
+}
+
+/* Hover only on real mouse devices */
+@media (hover: hover) {
+  .calendar-header button:hover {
+    background: #e0e0e0;
+  }
+}
+
+/* Calendar grid */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(7, minmax(40px, 1fr));
+  gap: 0.25rem;
+  overflow-x: auto; /* scroll for small screens */
 }
 
-/* Day cell */
 .calendar-day {
-  aspect-ratio: 1 / 1; /* makes squares */
+  aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 0.75rem;
   cursor: pointer;
   user-select: none;
-
-  background: #f7f7f7;
+  background: var(--secondary-bg);
+  min-width: 40px;
+  min-height: 40px;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Active day */
 .calendar-day.active {
-  background: #000;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--primary-bg);
 }
 
-/* Day number */
 .calendar-day > div:first-child {
   font-weight: 600;
   line-height: 1;
 }
 
-/* Daily sum */
 .calendar-day .sum {
-  font-size: 10px;
-  margin-top: 4px;
+  font-size: 0.625rem;
+  margin-top: 0.25rem;
   color: #666;
 }
 
@@ -77,162 +159,102 @@ body {
   color: #ddd;
 }
 
-/* Touch feedback (important for iOS) */
 .calendar-day:active {
   transform: scale(0.96);
 }
 
-/* ===== Larger screens ===== */
-@media (min-width: 600px) {
-  .calendar-grid {
-    gap: 8px;
-  }
-
-  .calendar-day {
-    font-size: 14px;
-  }
-
-  .calendar-day .sum {
-    font-size: 11px;
+@media (hover: hover) {
+  .calendar-day:hover {
+    background: #eee;
   }
 }
 
-h2 {
-  position: sticky;
-  top: 0;
-  background: #f5f5f5;
-  padding: 8px 0;
-  z-index: 1;
-}
-
-
-/* Tabs */
-.tabs {
+/* =========================
+   EXPENSE CARD
+========================= */
+.card {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.tabs button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: #ddd;
-  font-weight: 600;
-}
-
-.tabs button.active {
-  background: #000;
-  color: #fff;
-}
-
-/* Stats */
-label {
-  font-size: 14px;
-  display: block;
-}
-
-label input,
-label select {
-  margin-top: 6px;
-}
-
-/* Progress bar */
-.progress {
-  width: 100%;
-  height: 12px;
-  background: #eee;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-#progressBar {
-  height: 100%;
-  width: 0%;
-  background: #000;
-  transition: width 0.3s ease;
-}
-
-
-/* ===== Swipe to delete ===== */
-
-.swipe-item {
-  position: relative;
-  overflow: hidden;
-}
-
-.swipe-item::after {
-  content: "Delete";
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: white;
-  font-weight: 600;
-  pointer-events: none;
-}
-
-.swipe-item {
-  background: #e53935;
-}
-
-.swipe-content {
-  background: #fff;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--primary-bg);
+  padding: 0.75rem;
   border-radius: 12px;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  transition: transform 0.2s ease;
-  will-change: transform;
-}
-
-/* ===== Expense item ===== */
-
-.expense-item {
-  position: relative;
-  overflow: hidden;
-  background: #fff;
-  border-radius: 12px;
-  margin-top: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* Content layout */
+.card input,
+.card button {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.card button {
+  background: var(--primary-color);
+  color: var(--primary-bg);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.card button:hover {
+  background: #333;
+}
+
+@media (min-width: 600px) {
+  .card {
+    flex-direction: row;
+    align-items: center;
+  }
+  .card input {
+    flex: 1;
+  }
+  .card button {
+    flex-shrink: 0;
+  }
+}
+
+/* =========================
+   EXPENSE LIST
+========================= */
+.expense-item {
+  position: relative;
+  overflow: hidden;
+  background: var(--primary-bg);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
 .expense-content {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 12px;
-
-  padding: 12px 44px 12px 12px; /* space for delete button */
-  background: #fff;
-
+  gap: 0.75rem;
+  padding: 0.75rem 3rem 0.75rem 0.75rem; /* space for delete */
+  background: var(--primary-bg);
   transition: transform 0.2s ease;
   will-change: transform;
 }
 
-/* Note text */
 .expense-content span {
   word-break: break-word;
 }
 
-/* Amount */
 .expense-content strong {
   white-space: nowrap;
 }
 
-/* Delete button (desktop/web) */
 .delete-btn {
   position: absolute;
-  right: 10px;
+  right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 1.25rem;
   color: #999;
   cursor: pointer;
 }
@@ -243,27 +265,122 @@ label select {
 
 /* Swipe delete background */
 .expense-item {
-  background: #e53935;
+  background: var(--accent-color);
 }
 
 .expense-item::after {
   content: "Delete";
   position: absolute;
-  right: 16px;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: white;
+  color: #fff;
   font-weight: 600;
   pointer-events: none;
 }
 
-/* ===== Mobile / touch devices ===== */
+/* =========================
+   PROGRESS BAR
+========================= */
+.progress {
+  width: 100%;
+  height: 12px;
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+
+/* =========================
+   LABELS & INPUTS
+========================= */
+label {
+  font-size: 0.875rem;
+  display: block;
+}
+
+label input,
+label select {
+  margin-top: 0.25rem;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* =========================
+   MEDIA QUERIES - TABLET & DESKTOP
+========================= */
+/* @media (min-width: 600px) {
+  .calendar-grid {
+    gap: 0.5rem;
+  }
+
+  .calendar-day {
+    font-size: 0.875rem;
+    min-width: 50px;
+    min-height: 50px;
+  }
+}
+
+@media (min-width: 900px) {
+  .calendar-grid {
+    gap: 0.75rem;
+  }
+
+  .calendar-day {
+    font-size: 1rem;
+    min-width: 60px;
+    min-height: 60px;
+  }
+
+  .expense-content {
+    padding: 1rem 4rem 1rem 1rem;
+  }
+
+  .tabs {
+    gap: 1rem;
+  }
+
+  .tabs button {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .calendar-day {
+    font-size: 1.25rem;
+    min-width: 70px;
+    min-height: 70px;
+  }
+} */
+
+/* =========================
+   MOBILE TOUCH OPTIMIZATION
+========================= */
 @media (hover: none) {
   .delete-btn {
     display: none;
   }
 
   .expense-content {
-    padding-right: 12px; /* reclaim space */
+    padding-right: 1rem;
   }
 }
