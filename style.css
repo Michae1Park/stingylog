@@ -169,6 +169,37 @@ h2 {
   }
 }
 
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.month {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 10px;
+  background: var(--secondary-bg);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.month.active {
+  background: var(--primary-color);
+  color: var(--primary-bg);
+}
+
+@media (hover: hover) {
+  .month:hover {
+    background: #eee;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+
 /* =========================
    EXPENSE CARD
 ========================= */
@@ -215,6 +246,29 @@ h2 {
     flex-shrink: 0;
   }
 }
+
+/* Button group */
+.card .actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card .actions button {
+  flex: 1;
+}
+
+/* Secondary button */
+.card button.secondary {
+  background: #eee;
+  color: #333;
+}
+
+@media (hover: hover) {
+  .card button.secondary:hover {
+    background: #e0e0e0;
+  }
+}
+
 
 /* =========================
    EXPENSE LIST

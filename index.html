@@ -58,11 +58,13 @@
 				<!-- Calendar header with month navigation -->
 				<div class="calendar-header">
 					<button id="prevMonth">‹</button> <!-- Button to go to previous month -->
-					<span id="monthLabel"></span> <!-- Displays current month -->
+					<span id="monthLabel" role="button"></span> <!-- Displays current month -->
 					<button id="nextMonth">›</button> <!-- Button to go to next month -->
 				</div>
 				<!-- Calendar grid for days -->
 				<div class="calendar-grid" id="calendarGrid"></div>
+
+				<div class="month-grid hidden" id="monthGrid"></div>
 			</div>
 
 			<!-- Expense entry card -->
@@ -79,6 +81,7 @@
 					placeholder="What was it for?" 
 				/>
 				<button id="addBtn">Add Expense</button> <!-- Button to add expense -->
+				<button id="zeroBtn" class="secondary">No Spend</button>
 			</div>
 
 			<!-- Display total expenses -->
