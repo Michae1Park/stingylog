@@ -118,7 +118,7 @@ addBtn.onclick = () => {
 
 
 function formatMonth(date) {
-  return date.toLocaleString("default", { month: "long", year: "numeric" });
+  return date.toLocaleString("en-US", { month: "long", year: "numeric" });
 }
 
 function dayKey(date) {
