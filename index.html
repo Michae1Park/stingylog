@@ -139,16 +139,7 @@
 	<script type="module" src="app.js"></script>
 
 	<!-- Service Worker registration for PWA support -->
-	<script>
-	if ('serviceWorker' in navigator) {
-		window.addEventListener('load', async () => {
-		try {
-			await navigator.serviceWorker.register('./sw.js');
-		} catch (err) {
-			console.error('SW registration failed', err);
-		}
-		});
-	}
-	</script>
+	<script type="module" src="sw-register.js"></script>
+
 </body>
 </html>
