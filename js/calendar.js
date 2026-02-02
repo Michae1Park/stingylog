@@ -15,10 +15,21 @@ export function renderCalendar(elements, onSelectDate) {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+  // Add day names row (Mon - Sun)
+  const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  for (let i = 0; i < dayNames.length; i++) {
+    const dayHeader = document.createElement("div");
+    dayHeader.className = "calendar-day-name";
+    dayHeader.textContent = dayNames[i];
+    calendarGrid.appendChild(dayHeader);
+  }
+
+  // Empty cells for the first week
   for (let i = 0; i < (firstDay + 6) % 7; i++) {
     calendarGrid.appendChild(document.createElement("div"));
   }
 
+  // Render the days
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, month, day);
     const key = dayKey(date);

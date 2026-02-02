@@ -137,6 +137,18 @@ h2 {
   transition: background 0.2s, color 0.2s;
 }
 
+/* Day names header (Mon - Sun) */
+.calendar-day-name {
+  font-weight: bold;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 0.8rem;      /* slightly larger text */
+  color: #333;             /* dark gray text for readability */
+  background-color: #f5f5f5; /* subtle light background */
+  border-bottom: 1px solid #ddd; /* separates header from days */
+  text-transform: uppercase; /* makes them all caps for style */
+}
+
 .calendar-day.active {
   background: var(--primary-color);
   color: var(--primary-bg);
