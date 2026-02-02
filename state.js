@@ -1,13 +1,12 @@
 // state.js
 import { today } from "./dates.js";
 
-export const state = {
-  currentMonth: (() => {
-    const d = new Date();
-    d.setDate(1);
-    return d;
-  })(),
+// Create a Date object representing the first day of the current month
+const firstDayOfCurrentMonth = new Date();
+firstDayOfCurrentMonth.setDate(1);
 
-  selectedDate: today(),
-  expenses: []
+export const state = {
+  currentMonth: firstDayOfCurrentMonth,  // the month currently displayed in the calendar
+  selectedDate: today(),                 // the date the user has selected (defaults to today)
+  expenses: []                           // array to hold all expense entries
 };
