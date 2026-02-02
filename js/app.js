@@ -37,3 +37,21 @@ function refresh() {
 }
 
 refresh();
+
+/* Tab switching logic */ 
+const tabs = [
+  { button: tabCalendar, view: calendarView, render: refresh },
+  { button: tabStats, view: statsView, render: renderStats }
+];
+
+tabs.forEach(({ button, view, render }) => {
+  button.addEventListener("click", () => {
+    tabs.forEach(t => {
+      t.view.hidden = true;
+      t.button.classList.remove("active");
+    });
+    view.hidden = false;
+    button.classList.add("active");
+    render();
+  });
+});
