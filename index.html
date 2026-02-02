@@ -84,11 +84,15 @@
 				<button id="zeroBtn" class="secondary">No Spend</button>
 			</div>
 
-			<!-- Display total expenses -->
-			<h2 id="total">Total: 0</h2>
+			<!-- Bottom Summary Card -->
+			<div class="total-card">
+				<div class="total-meta">TOTAL</div>
+				<div id="total" class="total-amount">₩0</div>
+				<div class="total-date" id="totalDate">Selected day</div>
+			</div>
 
 			<!-- List of added expenses -->
-			<ul id="list"></ul>
+			<ul id="list" class="expense-list"></ul>
 		</section>
 
 		<!-- Statistics view section (hidden by default) -->
@@ -131,7 +135,8 @@
 	</main>
 
 	<!-- Main JavaScript file -->
-	<script src="app.js"></script>
+	<script src="app_old.js"></script>
+	<!-- <script type="module" src="app.js"></script> -->
 
 	<!-- Service Worker registration for PWA support -->
 	<script>

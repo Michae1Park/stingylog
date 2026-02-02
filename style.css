@@ -31,15 +31,13 @@ body {
   margin: 0 auto;
 }
 
-/* Sticky header / total */
 h2 {
-  position: sticky;
-  top: 0;
-  background: #f5f5f5;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  z-index: 1;
+  position: static;
+  background: none;
+  padding: 0;
+  font-size: inherit;
 }
+
 
 /* =========================
    TABS
@@ -199,6 +197,38 @@ h2 {
   display: none;
 }
 
+/* =========================
+   Total Card
+========================= */
+.total-card {
+  margin: 1.25rem 0.75rem 0.75rem;
+  padding: 1.25rem;
+  background: #0e0e0f; /* darker than cards */
+  border-radius: 20px; /* more premium */
+}
+
+.total-meta {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+}
+
+.total-amount {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+
+.total-date {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.expense-list {
+  list-style: none;
+  margin: 0.5rem 0.75rem 1.5rem;
+  padding: 0;
+}
 
 /* =========================
    EXPENSE CARD
@@ -274,12 +304,15 @@ h2 {
    EXPENSE LIST
 ========================= */
 .expense-item {
-  position: relative;
-  overflow: hidden;
-  background: var(--primary-bg);
-  border-radius: 12px;
+  background: #111;
+  border-radius: 14px;
   margin-top: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.expense-item::after {
+  display: none;
 }
 
 .expense-content {
@@ -288,9 +321,7 @@ h2 {
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 3rem 0.75rem 0.75rem; /* space for delete */
-  background: var(--primary-bg);
-  transition: transform 0.2s ease;
-  will-change: transform;
+  background: #111;
 }
 
 .expense-content span {
@@ -302,36 +333,19 @@ h2 {
 }
 
 .delete-btn {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  color: #999;
-  cursor: pointer;
+  color: #ff453a;
+  opacity: 0.8;
 }
 
 .delete-btn:hover {
-  color: #000;
+  opacity: 1;
 }
 
-/* Swipe delete background */
-.expense-item {
-  background: var(--accent-color);
-}
-
-.expense-item::after {
-  content: "Delete";
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #fff;
-  font-weight: 600;
-  pointer-events: none;
-}
+/* ========================= */
+/* ========================= */
+/*   Stats View              */
+/* ========================= */
+/* ========================= */
 
 /* =========================
    PROGRESS BAR
@@ -369,62 +383,6 @@ label select {
   border-radius: 8px;
   border: 1px solid #ddd;
 }
-
-/* =========================
-   MEDIA QUERIES - TABLET & DESKTOP
-========================= */
-/* @media (min-width: 600px) {
-  .calendar-grid {
-    gap: 0.5rem;
-  }
-
-  .calendar-day {
-    font-size: 0.875rem;
-    min-width: 50px;
-    min-height: 50px;
-  }
-}
-
-@media (min-width: 900px) {
-  .calendar-grid {
-    gap: 0.75rem;
-  }
-
-  .calendar-day {
-    font-size: 1rem;
-    min-width: 60px;
-    min-height: 60px;
-  }
-
-  .expense-content {
-    padding: 1rem 4rem 1rem 1rem;
-  }
-
-  .tabs {
-    gap: 1rem;
-  }
-
-  .tabs button {
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    font-size: 18px;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  .calendar-day {
-    font-size: 1.25rem;
-    min-width: 70px;
-    min-height: 70px;
-  }
-} */
 
 /* =========================
    MOBILE TOUCH OPTIMIZATION

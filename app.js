@@ -1,135 +1,42 @@
-const calendarGrid = document.getElementById("calendarGrid");
-const monthLabel = document.getElementById("monthLabel");
-const prevMonthBtn = document.getElementById("prevMonth");
-const nextMonthBtn = document.getElementById("nextMonth");
+// app.js
+import { state } from "./state.js";
+import { loadExpenses, saveExpenses } from "./storage.js";
+import { renderCalendar } from "./calendar.js";
+import { renderList } from "./list.js";
+import { renderStats } from "./stats.js";
 
-let currentMonth = new Date();
-currentMonth.setDate(1);
+state.expenses = loadExpenses();
 
-const amountInput = document.getElementById("amount");
-const noteInput = document.getElementById("note");
-const addBtn = document.getElementById("addBtn");
-const list = document.getElementById("list");
-const totalEl = document.getElementById("total");
+const elements = {
+  calendarGrid: document.getElementById("calendarGrid"),
+  monthLabel: document.getElementById("monthLabel"),
+  list: document.getElementById("list"),
+  totalEl: document.getElementById("total"),
 
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-
-// --- stats logib --
-const calendarView = document.getElementById("calendarView");
-const statsView = document.getElementById("statsView");
-const tabCalendar = document.getElementById("tabCalendar");
-const tabStats = document.getElementById("tabStats");
-
-const rangeSelect = document.getElementById("range");
-const customRange = document.getElementById("customRange");
-const fromDate = document.getElementById("fromDate");
-const toDate = document.getElementById("toDate");
-const budgetInput = document.getElementById("budget");
-
-const statsTotal = document.getElementById("statsTotal");
-const statsPercent = document.getElementById("statsPercent");
-const progressBar = document.getElementById("progressBar");
-
-
-// ---- date helpers ----
-function today() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-let selectedDate = today();
-
-// ---- persistence ----
-function save() {
-  localStorage.setItem("expenses", JSON.stringify(expenses));
-}
-
-// ---- data helpers ----
-function expensesFor(date) {
-  return expenses.filter(e => e.date === date);
-}
-
-// ---- rendering ----
-function render() {
-  list.innerHTML = "";
-
-  const dayExpenses = expensesFor(selectedDate);
-  let total = 0;
-
-  dayExpenses.forEach(e => {
-    total += e.amount;
-
-    const li = document.createElement("li");
-    li.className = "expense-item";
-
-    const content = document.createElement("div");
-    content.className = "expense-content";
-
-    const text = document.createElement("span");
-    text.textContent = e.note || "(no note)";
-
-    const amount = document.createElement("strong");
-    amount.textContent = e.amount;
-
-    content.appendChild(text);
-    content.appendChild(amount);
-
-    const del = document.createElement("button");
-    del.className = "delete-btn";
-    del.textContent = "✕";
-    del.onclick = () => {
-        expenses = expenses.filter(x => x.id !== e.id);
-        save();
-        render();
-        renderCalendar();
-    };
-
-    li.appendChild(content);
-    li.appendChild(del);
-    list.appendChild(li);
-
-    enableSwipe(li, content, e.id);
-  });
-
-
-  totalEl.textContent = `Total (${selectedDate}): ${total}`;
-}
-
-// ---- add expense ----
-addBtn.onclick = () => {
-  const amount = Number(amountInput.value);
-  const note = noteInput.value.trim();
-
-  if (!amount) return;
-
-  expenses.push({
-    id: crypto.randomUUID(),
-    amount,
-    note,
-    date: selectedDate,
-    createdAt: Date.now()
-  });
-
-  save();
-  render();
-
-  amountInput.value = "";
-  noteInput.value = "";
+  rangeSelect: document.getElementById("range"),
+  customRange: document.getElementById("customRange"),
+  fromDate: document.getElementById("fromDate"),
+  toDate: document.getElementById("toDate"),
+  budgetInput: document.getElementById("budget"),
+  statsTotal: document.getElementById("statsTotal"),
+  statsPercent: document.getElementById("statsPercent"),
+  progressBar: document.getElementById("progressBar")
 };
 
+// function refresh() {
+//   renderCalendar(elements, date => {
+//     state.selectedDate = date;
+//     refresh();
+//   });
 
-function formatMonth(date) {
-  return date.toLocaleString("en-US", { month: "long", year: "numeric" });
-}
+//   renderList(elements, id => {
+//     state.expenses = state.expenses.filter(e => e.id !== id);
+//     saveExpenses(state.expenses);
+//     refresh();
+//   });
+// }
 
-function dayKey(date) {
-  return date.toISOString().slice(0, 10);
-}
-
-function dailyTotal(dateStr) {
-  return expenses
-    .filter(e => e.date === dateStr)
-    .reduce((sum, e) => sum + e.amount, 0);
-}
+// refresh();
 
 function renderCalendar() {
   calendarGrid.innerHTML = "";
@@ -170,118 +77,4 @@ function renderCalendar() {
   }
 }
 
-prevMonthBtn.onclick = () => {
-  currentMonth.setMonth(currentMonth.getMonth() - 1);
-  renderCalendar();
-};
-
-nextMonthBtn.onclick = () => {
-  currentMonth.setMonth(currentMonth.getMonth() + 1);
-  renderCalendar();
-};
-
-
-// -- stats logic
-tabCalendar.onclick = () => {
-  calendarView.hidden = false;
-  statsView.hidden = true;
-  tabCalendar.classList.add("active");
-  tabStats.classList.remove("active");
-};
-
-tabStats.onclick = () => {
-  calendarView.hidden = true;
-  statsView.hidden = false;
-  tabStats.classList.add("active");
-  tabCalendar.classList.remove("active");
-  renderStats();
-};
-
-function dateNDaysAgo(n) {
-  const d = new Date();
-  d.setDate(d.getDate() - n + 1);
-  return d.toISOString().slice(0, 10);
-}
-
-function inRange(date, from, to) {
-  return date >= from && date <= to;
-}
-
-function renderStats() {
-  let from, to;
-
-  if (rangeSelect.value === "custom") {
-    customRange.hidden = false;
-    from = fromDate.value;
-    to = toDate.value;
-    if (!from || !to) return;
-  } else {
-    customRange.hidden = true;
-    const days = Number(rangeSelect.value);
-    from = dateNDaysAgo(days);
-    to = today();
-  }
-
-  const total = expenses
-    .filter(e => inRange(e.date, from, to))
-    .reduce((sum, e) => sum + e.amount, 0);
-
-  statsTotal.textContent = `Total: ${total}`;
-
-  const budget = Number(budgetInput.value);
-  if (budget > 0) {
-    const pct = Math.min(100, Math.round((total / budget) * 100));
-    progressBar.style.width = pct + "%";
-    statsPercent.textContent = `${pct}% of budget used`;
-  } else {
-    progressBar.style.width = "0%";
-    statsPercent.textContent = "No budget set";
-  }
-}
-
-rangeSelect.onchange =
-budgetInput.oninput =
-fromDate.onchange =
-toDate.onchange = renderStats;
-
-
 renderCalendar();
-render();
-
-function enableSwipe(li, content, expenseId) {
-  if (!("ontouchstart" in window)) return;
-
-  let startX = 0;
-  let currentX = 0;
-
-  content.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-    content.style.transition = "none";
-  }, { passive: true });
-
-  content.addEventListener("touchmove", e => {
-    currentX = e.touches[0].clientX - startX;
-    if (currentX < 0) {
-      content.style.transform = `translateX(${currentX}px)`;
-    }
-  }, { passive: true });
-
-  content.addEventListener("touchend", () => {
-    content.style.transition = "transform 0.2s ease";
-
-    if (currentX < -80) {
-      content.style.transform = "translateX(-100%)";
-      setTimeout(() => {
-        expenses = expenses.filter(e => e.id !== expenseId);
-        save();
-        render();
-        renderCalendar();
-      }, 200);
-    } else {
-      content.style.transform = "translateX(0)";
-    }
-
-    currentX = 0;
-  });
-}
-
