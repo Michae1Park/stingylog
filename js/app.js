@@ -37,29 +37,40 @@ for (const [key, el] of Object.entries(elements)) {
 
 /* Tab switching logic */ 
 const tabs = [
-  { button: elements.tabCalendar, view: elements.calendarView, render: refresh },
-  { button: elements.tabStats, view: elements.statsView, render: renderStats }
+  { 
+    button: elements.tabCalendar, 
+    view: elements.calendarView,
+    render: refresh 
+  },
+  { 
+    button: elements.tabStats, 
+    view: elements.statsView, 
+    render: renderStats 
+  }
 ];
 
-
-tabs.forEach(({ button, view, render }) => {
-  button.addEventListener("click", () => {
-    tabs.forEach(t => {
-      t.view.hidden = true;
-      t.button.classList.remove("active");
-    });
-    view.hidden = false;
-    button.classList.add("active");
-    render();
+function activateTab(tab) {
+  // Hide all tabs
+  tabs.forEach(t => {
+    t.view.hidden = true;
+    t.button.classList.remove("active");
   });
+
+  // Show selected tab
+  tab.view.hidden = false;
+  tab.button.classList.add("active");
+
+  // Update its content
+  tab.render();
+}
+
+tabs.forEach(tab => {
+  tab.button.addEventListener("click", () => activateTab(tab));
 });
 
 /* Refresh function to update views */
 function refresh() {
-  renderCalendar(elements, date => {
-    state.selectedDate = date;
-    refresh();
-  });
+  renderCalendar(elements);
 
   renderList(elements, id => {
     state.expenses = state.expenses.filter(e => e.id !== id);
@@ -69,4 +80,5 @@ function refresh() {
 }
 
 refresh();
+
 
